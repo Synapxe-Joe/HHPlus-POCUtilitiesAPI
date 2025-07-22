@@ -17,7 +17,7 @@ namespace POC.Utilities.API.Controllers
         public IActionResult Index([FromBody][FromQuery] EmergencyContact emergencyContact)
         {
             PassGeneratorRequest passGeneratorRequest = new PassGeneratorRequest();
-            passGeneratorRequest.PassTypeIdentifier = "pass.Healthhub";
+            passGeneratorRequest.PassTypeIdentifier = "synapxe.healthhubplus.dev";
             passGeneratorRequest.TeamIdentifier = "FJZERSG4G2"; // Replace with your actual team identifier
             passGeneratorRequest.SerialNumber = Guid.NewGuid().ToString();
             passGeneratorRequest.Description = "Emergency Contact";
