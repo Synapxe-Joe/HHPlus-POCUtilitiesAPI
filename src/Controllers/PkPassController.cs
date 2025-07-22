@@ -18,16 +18,18 @@ namespace POC.Utilities.API.Controllers
         {
             string serialNumber = Guid.NewGuid().ToString();
 
-            PassGeneratorRequest passGeneratorRequest = new PassGeneratorRequest();
-            //passGeneratorRequest.PassTypeIdentifier = "Apple Push Services: com.hpb.HealthHub.sit.rebuild";
+            PassGeneratorRequest passGeneratorRequest = new PassGeneratorRequest();            
             passGeneratorRequest.PassTypeIdentifier = "Pass Type ID: pass.Healthhub";
             passGeneratorRequest.TeamIdentifier = "FJZERSG4G2"; // Replace with your actual team identifier
             passGeneratorRequest.SerialNumber = serialNumber;
             passGeneratorRequest.Description = "Emergency Contact";
             passGeneratorRequest.OrganizationName = "Synapxe";
-
+            passGeneratorRequest.LogoText = "Emergency Contact";
+            
             passGeneratorRequest.Style = PassStyle.Generic;
-
+            passGeneratorRequest.BackgroundColor = "#FFFFFF";
+            passGeneratorRequest.LabelColor = "#000000";
+            passGeneratorRequest.ForegroundColor = "#000000";
 
             // Load certificate
             string certificatePath = "Certificates/Certificates.p12" // Update as needed               
@@ -36,21 +38,19 @@ namespace POC.Utilities.API.Controllers
             , appleWWDRCAPath = "Certificates/AppleWWDRCAG4.cer"; // Update as needed   
 
 
-            X509Certificate2 certificate = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
-            X509Certificate2 passCertificate=new X509Certificate2(passCertficatePath);
+            X509Certificate2 certificate = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);            
             X509Certificate2 appleWWDRCA = new X509Certificate2(appleWWDRCAPath);
 
             passGeneratorRequest.PassbookCertificate = certificate;            
             passGeneratorRequest.AppleWWDRCACertificate = appleWWDRCA;
 
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
-            passGeneratorRequest.AddPrimaryField(new StandardField("contact", "contact", emergencyContact.Contact));
+            passGeneratorRequest.AddSecondaryField(new StandardField("contact", "contact", emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}"));
 
             passGeneratorRequest.Images.Add(PassbookImage.Icon, System.IO.File.ReadAllBytes("Resources/icon.png")); 
             passGeneratorRequest.Images.Add(PassbookImage.Icon2X, System.IO.File.ReadAllBytes("Resources/icon@2x.png")); 
 
-            PassGenerator passGenerator = new PassGenerator();
-            using var pkPassStream = new MemoryStream();
+            PassGenerator passGenerator = new PassGenerator();            
 
             try
             {
