@@ -45,7 +45,9 @@ namespace POC.Utilities.API.Controllers
             passGeneratorRequest.AppleWWDRCACertificate = appleWWDRCA;
 
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
-            passGeneratorRequest.AddSecondaryField(new StandardField("contact", "contact", emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}"));
+            passGeneratorRequest.AddSecondaryField(new StandardField("contact", "contact", emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}"
+                , emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}", DataDetectorTypes.PKDataDetectorTypePhoneNumber));
+                
 
             passGeneratorRequest.Images.Add(PassbookImage.Icon, System.IO.File.ReadAllBytes("Resources/icon.png")); 
             passGeneratorRequest.Images.Add(PassbookImage.Icon2X, System.IO.File.ReadAllBytes("Resources/icon@2x.png")); 
