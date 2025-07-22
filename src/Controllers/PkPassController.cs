@@ -46,7 +46,7 @@ namespace POC.Utilities.API.Controllers
 
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
             passGeneratorRequest.AddSecondaryField(new StandardField("contact", "contact", emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}"
-                , emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}", DataDetectorTypes.PKDataDetectorTypePhoneNumber));
+                , null, DataDetectorTypes.PKDataDetectorTypePhoneNumber));
                 
 
             passGeneratorRequest.Images.Add(PassbookImage.Icon, System.IO.File.ReadAllBytes("Resources/icon.png")); 
