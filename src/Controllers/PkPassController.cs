@@ -3,6 +3,7 @@ using Passbook.Generator;
 using Passbook.Generator.Fields;
 using POC.Utilities.API.Models;
 using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace POC.Utilities.API.Controllers
 {
@@ -40,6 +41,8 @@ namespace POC.Utilities.API.Controllers
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
             passGeneratorRequest.AddPrimaryField(new StandardField("contact", "contact", emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+{emergencyContact.Contact}"));
 
+            passGeneratorRequest.Images.Add(PassbookImage.Icon, System.IO.File.ReadAllBytes("Resources/icon.png")); 
+            passGeneratorRequest.Images.Add(PassbookImage.Icon2X, System.IO.File.ReadAllBytes("Resources/icon@2x.png")); 
 
             PassGenerator passGenerator = new PassGenerator();
             using var pkPassStream = new MemoryStream();
