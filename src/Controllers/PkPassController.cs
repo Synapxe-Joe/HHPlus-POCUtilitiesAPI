@@ -42,10 +42,10 @@ namespace POC.Utilities.API.Controllers
             X509Certificate2 appleWWDRCA = new X509Certificate2(appleWWDRCAPath);
 
             passGeneratorRequest.PassbookCertificate = certificate;            
-            passGeneratorRequest.AppleWWDRCACertificate = appleWWDRCA;
+            passGeneratorRequest.AppleWWDRCACertificate = appleWWDRCA;            
 
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
-            passGeneratorRequest.AddSecondaryField(new StandardField("contact", "contact", emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}"
+            passGeneratorRequest.AddAuxiliaryField(new StandardField("contact", "contact", emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}"
                 , null, DataDetectorTypes.PKDataDetectorTypePhoneNumber));
                 
 
