@@ -16,10 +16,13 @@ namespace POC.Utilities.API.Controllers
 
         public IActionResult Index([FromBody][FromQuery] EmergencyContact emergencyContact)
         {
+            string serialNumber = Guid.NewGuid().ToString();
+
             PassGeneratorRequest passGeneratorRequest = new PassGeneratorRequest();
-            passGeneratorRequest.PassTypeIdentifier = "Apple Push Services: com.hpb.HealthHub.sit.rebuild";
+            //passGeneratorRequest.PassTypeIdentifier = "Apple Push Services: com.hpb.HealthHub.sit.rebuild";
+            passGeneratorRequest.PassTypeIdentifier = "Pass Type ID: pass.Healthhub";
             passGeneratorRequest.TeamIdentifier = "FJZERSG4G2"; // Replace with your actual team identifier
-            passGeneratorRequest.SerialNumber = Guid.NewGuid().ToString();
+            passGeneratorRequest.SerialNumber = serialNumber;
             passGeneratorRequest.Description = "Emergency Contact";
             passGeneratorRequest.OrganizationName = "Synapxe";
 
@@ -27,15 +30,17 @@ namespace POC.Utilities.API.Controllers
 
 
             // Load certificate
-            string certificatePath = "Certificates/Certificates.p12" // Update as needed
+            string certificatePath = "Certificates/Certificates.p12" // Update as needed               
             , certificatePassword = "Syn@pxe2025"    // Update as needed
-            , appleWWDRCAPath = "Certificates/AppleWWDRCAG3.cer"; // Update as needed   
+            , passCertficatePath = "Certificates/pass.cer" // Update as needed
+            , appleWWDRCAPath = "Certificates/AppleWWDRCAG4.cer"; // Update as needed   
 
 
             X509Certificate2 certificate = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
+            X509Certificate2 passCertificate=new X509Certificate2(passCertficatePath);
             X509Certificate2 appleWWDRCA = new X509Certificate2(appleWWDRCAPath);
 
-            passGeneratorRequest.PassbookCertificate = certificate;
+            passGeneratorRequest.PassbookCertificate = certificate;            
             passGeneratorRequest.AppleWWDRCACertificate = appleWWDRCA;
 
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
@@ -56,11 +61,11 @@ namespace POC.Utilities.API.Controllers
                 {
                     case "wallet":                        
                         contentType = "application/vnd.apple.pkpass";
-                        fileName = "EmergencyContact.pkpass";
+                        fileName = $"EmergencyContact_{serialNumber}.pkpass";
                         break;
                     default:
                         contentType = "application/zip";
-                        fileName = "EmergencyContact.zip";
+                        fileName = $"EmergencyContact_{serialNumber}.zip";
                         break;
                 }
                 return File(generatedPass, contentType, fileName);
