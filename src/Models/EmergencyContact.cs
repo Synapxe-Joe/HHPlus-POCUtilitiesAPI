@@ -8,5 +8,7 @@ namespace POC.Utilities.API.Models
         public required string Name { get; set; }
         [JsonPropertyName("contact")]
         public required string Contact { get; set; }
+        [JsonPropertyName("mode")]
+        public string? Mode { get; set; } = "wallet";
     }
 }
