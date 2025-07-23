@@ -46,7 +46,7 @@ namespace POC.Utilities.API.Controllers
 
             string contactNo = emergencyContact.Contact.StartsWith("+") ? emergencyContact.Contact : $"+65{emergencyContact.Contact}";
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
-            passGeneratorRequest.AddPrimaryField(new StandardField("contact", "contact", contactNo,
+            passGeneratorRequest.AddSecondaryField(new StandardField("contact", "contact", contactNo,
                "<a href='tel:" + contactNo + "'>" + contactNo + "</a>", DataDetectorTypes.PKDataDetectorTypePhoneNumber));
             passGeneratorRequest.AddBackField(new StandardField("contact", "contact", contactNo,
                "<a href='tel:" + contactNo + "'>" + contactNo + "</a>", DataDetectorTypes.PKDataDetectorTypePhoneNumber));
