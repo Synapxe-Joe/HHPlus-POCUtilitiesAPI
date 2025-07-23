@@ -48,7 +48,9 @@ namespace POC.Utilities.API.Controllers
             passGeneratorRequest.AddPrimaryField(new StandardField("name", "name", emergencyContact.Name));
             passGeneratorRequest.AddPrimaryField(new StandardField("contact", "contact", contactNo,
                "<a href='tel:" + contactNo + "'>" + contactNo + "</a>", DataDetectorTypes.PKDataDetectorTypePhoneNumber));
-                
+            passGeneratorRequest.AddBackField(new StandardField("contact", "contact", contactNo,
+               "<a href='tel:" + contactNo + "'>" + contactNo + "</a>", DataDetectorTypes.PKDataDetectorTypePhoneNumber));
+
 
             passGeneratorRequest.Images.Add(PassbookImage.Icon, System.IO.File.ReadAllBytes("Resources/icon.png")); 
             passGeneratorRequest.Images.Add(PassbookImage.Icon2X, System.IO.File.ReadAllBytes("Resources/icon@2x.png")); 
